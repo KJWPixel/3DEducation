@@ -24,6 +24,24 @@ public class CSlime_quaternion : MonoBehaviour
 
     private void OnGUI()
     {
+        //사원수의 보간(Interpolation: 근사치를 구한다)
+        if (GUI.Button(new Rect(200f, 0f, 100f, 100f), "Quaternion\n보간"))
+        {
+            //z,x,y순으로 90, 90, 90 사원수의 곱셈으로 회전 표현
+            mEnd = Quaternion.Euler(0f, 0f, 90f) * Quaternion.Euler(90f, 0f, 0f) * Quaternion.Euler(00f, 90f, 0f);
+            //z축 90도로 오일러각에 의한 회전을 하고 사원수로 변환해서 리턴한다.
+
+            //this.transform.rotation = mEnd;
+
+            //선형보간의 가중치는 0부터 시작
+            mWeight = 0f;
+
+            //상태변경
+            mState = STATE.WITH_INTERPLATION;
+        }
+
+
+
         if (GUI.Button(new Rect(0f, 0f, 100f, 100f), "Quaternion곱셈"))
         {
             //z,x,y순으로 90, 90, 90 사원수의 곱셈으로 회전 표현
@@ -65,18 +83,61 @@ public class CSlime_quaternion : MonoBehaviour
             tM.SetTRS(Vector3.zero, Quaternion.Euler(0f, 90f, 0f), Vector3.one);//y축 회전축으로 90도 회전 행렬
             mMatRot = tM * mMatRot;
 
+            //변환된 위치 값들을 담을 새로운 원소들의 배열을 만들자
             mMeshFilter = GetComponentInChildren<MeshFilter>();
-            mOriginVertices = mMeshFilter.mesh.vertices; //정점을 조회하여 담아둔다.
+            mOriginVertices = mMeshFilter.mesh.vertices; //정점을 조회하여 담아둔다.(벡터타입의 원소들은 값타입이므로 북사되어 담기도록 만들어져 있다.)
+
+            int ti = 0;   
+            while(ti<mOriginVertices.Length)
+            {
+                mNewVertices[ti] = mMatRot.MultiplyPoint3x4(mOriginVertices[ti]);
+                //MultiplyPoint3x4 = (4 x 4) + (4 x 1) = 4 x 1이지만 해당 함수를 사용하여 3 x 1로 변환
+
+                ++ti;
+            }
+
+            //메쉬필터 컴포넌트(회전 변환 행렬이 적용된) 새로운 메쉬를 적용한다.
+            mMeshFilter.mesh.vertices = mNewVertices;   
         }
     }
 
     void Start()
     {
-        
+
     }
-    
+
+    enum STATE
+    {
+        WITH_NONE = 0,
+        WITH_INTERPLATION  //보간 상태
+    }
+
+    STATE mState = STATE.WITH_NONE;
+
+    float mWeight = 0.0f;
+
+
     void Update()
     {
-        
+        if(STATE.WITH_INTERPLATION == mState)
+        {
+            //사원수의 선형보간
+            //this.transform.rotation = Quaternion.Lerp(mStart, mEnd, mWeight);
+            this.transform.rotation = Quaternion.Slerp(mStart, mEnd, mWeight);//Lerp보다 좀더 변화가 다이나믹한 즉 부드러운 움직임을 만든다.
+            //Slerp Sphere Linear Interpolation 구면 성형 보간
+            /*
+            선형 보간은 일차함수(직선의 방정식)를 이용하여 근사치를 구한다.
+            구면 성형 보간은 두 점 사이의 (원의 틀에의 일부인)) '호'를 사용하여 근사치를 구한다.
+
+            원의 호는 곡선이므로
+            기울기가 변한다.
+            그러므로 보다 역동적인(일반적인 선형보간보다 좀더 변화가 다이나믹함)
+            표현이 가능하다.
+            */ 
+             
+            
+
+            mWeight += Time.deltaTime;
+        }
     }
 }
