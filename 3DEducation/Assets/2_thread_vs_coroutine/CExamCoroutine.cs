@@ -20,10 +20,10 @@ public class CExamCoroutine : MonoBehaviour
     {
         Debug.Log("DoDispatch");
 
-        for(; ; )
+        for(;;)
         {
             Debug.Log("DoDispatch 00");
-            yield return null;
+            yield return null;//한 프레임정도 양보
             Debug.Log("DoDispatch 01");
         }
         Debug.Log("//DoDispatch");
