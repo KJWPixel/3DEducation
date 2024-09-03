@@ -1,5 +1,25 @@
 memo_tps.txt
 
+함수의 overload(함수의 중북정의)
+:함수가 이름은 같고 매개변수 리스트가 다른 것.
+
+함수의 override(함수의 재정의)
+:부모클래스의 함수와 동일한 형태로 만들되
+실제 정의의 구현은 다르게 하는 것.
+
+
+OOP갹체지향 프로그래밍 코드의 4가지 특징
+
+추상화 abstraction
+
+은닉화 encapsulation
+
+상속화 inheritance
+
+다형성 polymorphism
+ virtual + override + 부모클래스 참조 타입으로 다루기를 결합해서 만든다.
+
+
 import
 외부의 파일 자원을 유니티로 가져와 '에셋'화하는 동작
 
@@ -340,6 +360,11 @@ a + bi
 3_AI_Navigation
 	
 	<--A*알고리즘: 게임업계에서 길찾기에 사용하는 대표적인 알고리즘(필수)
+	f = g + h
+	f: 현재 판단가능한 최선의 비용
+	g: 현재지점까지의 실제비용
+	h: 현재지점에서 최종지점까지의 추정비용 
+
 
 	유니티에서 제공하는 인공지능 길찾기
 
@@ -359,12 +384,58 @@ a + bi
 		:( OffMesh Link기능이다)
 		서로 떨어진 메쉬를 이동할 수 있게 연결 정보를 만드는 것이다.
 		지형정보에 대해 전역적으로 생성된다.
+		방향은 한 방향이다.(높은데서 낮은데로)
+
+
+		<--OffMeshLink컴포넌트
+			컴포넌트를 부착하여 만든다.
+			시작점 끝점 지정 가능하다.
+			베이크 정보에 포함되지 않는다.
+
+		<--NavMeshLink컴포넌트
+			컴포넌트를 부착하여 만든다.
+			시작점, 끝점 지정 가능하다.
+			베이크 정보에 포함되지 않는다.
+
+			서로 다른 베이크된 지형 정보 사이에 이동도 가능하다.
 
 	ii) NavMeshAgent
 		
 		미리 베이크된 지형정보를 기반으로
 		길찾기를 수행, 게임 오브젝트를 이동시킨다.
 
-
 	iii) NavMeshObstacle
+
+		실행중에 작동하는 동적 장애물을 만드는 컴포넌트
+
+		Carve옵션을 켜야만 작동한다.
+		Carve Only Stationary On 움직임이 없다고 판단되었을 때 장애물로 인식하도록 연산한다. <-- 실행중 연산이 비교적 작다.
+		Carve Only Stationary Off 움직이는 동안에도 장애물로 인식하도록 연산한다. <--실행중 연산이 많다
+
+	iv) NavMeshModifire
+
+		NavMesh Data 수정(변경)자
+
+		예) 만약 이동불가 지역을 만드려면
+		해당 지역에 해당하는 게임오브젝트에 NavMeshModifire컴포넌트를 부착하고
+		Override Area/Area Type을 Not Walkable로 설정한다.
+
+		Navigation윈도우의 Area탭에서
+		사용자 정의 커스텀 Area도 만들 수 있다.
+			Cost설정도 가능하다.
+
+
+4_Behaviour Tree
+
+	행동 트리
+	트리의 구조와 체계를 가져와 
+	임의의 행동을 결정하는 게임 인공지능 이론으로 사용한다.
+
+	
+	게임 인공지능의 주요한 두가지 기법
+	  i)FSM: Finite State Machine 유한상태기계
+		유한한 상태들의 추상적인 기계
+
+	  ii)Behaviour Tree
+		
 
