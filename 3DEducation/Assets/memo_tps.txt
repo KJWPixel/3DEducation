@@ -8,7 +8,7 @@ memo_tps.txt
 실제 정의의 구현은 다르게 하는 것.
 
 
-OOP갹체지향 프로그래밍 코드의 4가지 특징
+OOP객체지향 프로그래밍 코드의 4가지 특징
 
 추상화 abstraction
 
@@ -428,14 +428,74 @@ a + bi
 4_Behaviour Tree
 
 	행동 트리
-	트리의 구조와 체계를 가져와 
-	임의의 행동을 결정하는 게임 인공지능 이론으로 사용한다.
+	'트리' 자료구조의 구조와 체계를 가져와 
+	임의의 '행동'을 결정하는 게임 인공지능 이론으로 사용한다.
 
 	
 	게임 인공지능의 주요한 두가지 기법
-	  i)FSM: Finite State Machine 유한상태기계
+	  i)FSM: Finite State Machine 유한 상태 기계
+
 		유한한 상태들의 추상적인 기계
 
+		구현 방법에는 다음과 같은 것들이 있다.
+		가) if if if 
+		나) if else if else if
+		다) switch				  <-- 속도는 O(1), 다만 유지보수 관리에 문제가 있다
+		라) 함수의 참조테이블     <-- 속도는 O(1), switch보다는 유지보수 하기 좋다
+		마) State Pattern(공부)   <-- OOP를 기반으로 한 Design Pattern
+
 	  ii)Behaviour Tree
+
+	  가)사전배경 지식
+	    자료구조  Data Structure: N개의 자료들을 담아두는 구조물
+		  <--구조에 따라 자료구조마다 특성이 다르다.
+		  
+		배열 Array: 동일한 타입의 원소들의 연속적인 메모리 블럭
+		링크드 리스트 Linked List: 노드가 데이터와 링크를 가지고 각각의 링크에 의해 선형(1:1)으로 연결된 자료구조 
+		트리 Tree: 1:n의 비선형 자료구조, 계층형 자료구조
+		<--Level order방식으로 순회한다.
+
+		순회Traverse: 모든 노드를 중복없이 한번씩 방문하는 것.
+
+	  나)행동트리의 노드들의 전제조건
+
+	  노드는 반드시 다음 리턴값 중 하나를 가진다.
+	  Success <-- True
+	  Failure <-- False
+	  (Running)
+
+	  노드의 종류는 다음과 같은 것들이 있다.
+
+	  Composite Node
+		 Sequence: N개의 하위(자식) 노드를 가진다.
+		 <-- 하위 노드들 중 하나라도 false를 리턴라면 Sequence도 false를 리턴하며 그 즉시 종료한다.
+
+		 Selector: N개의 하위(자식) 노드를 가진다.
+		 <-- 하위 노드들 중 하나라도 true를 리턴하면 Selector도 true를 리턴하며 그 즉시 종료한다.
+
+	  Inverter: 반대, 즉 Not 연산자에 해당한다. 한개의 하위 노드를 가진다.
+
+	  ActionNode: 실제'행동'이 담긴다. 0개의 하위노드
+
+		
+
+
+
+
+
+	  //delegate 델리게이트 (대리자) <--간접호출의 도구
+	  public delegate void Func(); 델리게이트 선언
+
+	  List<Func> tFunctions = new List<Func>()
+	  {
+		doIdle, doAttck, doDamage
+	  };
+
+	  mCurState = 0;
+	  mCurState = 2;
+
+	  tFunctions[mCurState](); <--간접호출
+
+	  Console.ReadLine();
 		
 
