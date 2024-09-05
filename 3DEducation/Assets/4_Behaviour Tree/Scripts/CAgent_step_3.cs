@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CAgent_step_2 : MonoBehaviour
+public class CAgent_step_3 : MonoBehaviour
 {
 
     [SerializeField] Vector3 mTargetPosition = new Vector3(0, 0, 0);
@@ -17,16 +17,21 @@ public class CAgent_step_2 : MonoBehaviour
         //행동트리 구축 Build BT
         //행동트리로 작성하면 코드 변경의 경계가 행동트리 구축 부분으로 국지화 된다.
 
-        //Levle3
+        //Level4
         ActionNode tANMove = new ActionNode(DoMove);
+
+        //Level3
+        ActionNode tANIsArrived = new ActionNode(DoisArrived);
+        Inverter tNot = new Inverter(tANMove);
         List<Node> tLevel_3 = new List<Node>();
-        tLevel_3.Add(tANMove);
+        tLevel_3.Add(tANIsArrived);
+        tLevel_3.Add(tNot);
 
         //Level2
         Selector tSelectArrived = new Selector(tLevel_3);
         ActionNode tANAttack = new ActionNode(DoAttack);
         List<Node> tLevel_2 = new List<Node>();
-        tLevel_2.Add(tANMove);
+        tLevel_2.Add(tSelectArrived);
         tLevel_2.Add(tANAttack);
 
         //Level1
@@ -39,16 +44,10 @@ public class CAgent_step_2 : MonoBehaviour
         mRootNode.Evaluate();
     }
 
-    NodeStates DoMove()
+    NodeStates DoisArrived()
     {
-        //이도
-        Debug.Log("DoMove");
-
-        //MoveTowards선형보간을 기반으로 이동을 수행하는 함수
-        this.transform.position = Vector3.MoveTowards(this.transform.position, mTargetPosition, mSpeed * Time.deltaTime);
-
         //목적지에 도달했다면 성공
-        if(Vector3.Distance(this.transform.position, mTargetPosition) <= 0.01f)
+        if (Vector3.Distance(this.transform.position, mTargetPosition) <= 0.01f)
         {
             Debug.Log("<color='red'>Move Complete</color>");
 
@@ -58,6 +57,18 @@ public class CAgent_step_2 : MonoBehaviour
         {
             return NodeStates.FAILURE;
         }
+    }
+
+    NodeStates DoMove()
+    {
+        //이도
+        Debug.Log("DoMove");
+
+        //MoveTowards선형보간을 기반으로 이동을 수행하는 함수
+        this.transform.position = Vector3.MoveTowards(this.transform.position, mTargetPosition, mSpeed * Time.deltaTime);
+
+        return NodeStates.SUCCESS;
+
     }
 
     NodeStates DoAttack()
