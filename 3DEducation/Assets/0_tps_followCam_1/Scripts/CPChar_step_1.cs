@@ -23,10 +23,16 @@ public class CPChar_step_1 : MonoBehaviour
     //점프 힘의 크기(속도의 y성분에 대응되는 스칼라)
     [SerializeField] float mJumpower = 0f;
 
+    //마우스 커서 제어
+    [SerializeField] CursorLockMode mCurcorLockMode = CursorLockMode.None;
 
     void Start()
     {
-        
+        //mCurcorLockMode = CursorLockMode.Confined;//창 안으로 마우스 커서를 가둬 제한하기
+        //mCurcorLockMode = CursorLockMode.Locked;//마우스 움직임을 잠그고 표시를 숨김
+
+        //커서 제어 설정
+        Cursor.lockState = mCurcorLockMode;
     }
 
     
@@ -36,8 +42,8 @@ public class CPChar_step_1 : MonoBehaviour
         if (mCharController.isGrounded)
         {
             //축입력
-            float tV = Input.GetAxis("Vertical");//[-1, +1]
-            float tH = Input.GetAxis("Horizontal");
+            float tV = Input.GetAxisRaw("Vertical");//[-1, +1]
+            float tH = Input.GetAxisRaw("Horizontal");
 
             //동작을 관찰해보면 Move는 월드좌표계 기준으로 작동한다.
             //그러므로 주인공캐릭터 전방이라는 표현이 필요하다.
@@ -74,6 +80,40 @@ public class CPChar_step_1 : MonoBehaviour
         Vector3 tLookAtPosition = this.transform.position + tDir;
         //카메라 전방 방향의 임의의 지점을 바라보게 한다.
         this.transform.LookAt(tLookAtPosition);
+
+
+        //왼쪽 마우스 버튼 클릭시 발사 
+        if(Input.GetMouseButtonDown(0))
+        {
+            Debug.Log("<size='14'> PChar Do Fire </size>");
+            DoFire_RayCast();
+        }
+    }
+
+    private void DoFire_RayCast()
+    {
+        //카메라에서 발사되는 반직선 구하기 (Screen --> World Space)
+        Ray Ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+
+
+        //반직선과 충돌체를 통한 충돌 검출
+        RaycastHit tHit;
+        //반직선
+        bool tIsCollision = Physics.Raycast(Ray, out tHit, Mathf.Infinity);
+
+        if (tIsCollision)
+        {
+            Debug.Log("Fire!");
+
+            //if (tHit.collider.CompareTag("tagActor"))
+            //{
+            //    Debug.Log("<color='red'>Hit Actor! </color>");
+            //}
+        }
+        else
+        {
+            Debug.Log("NOT collision!");
+        }
 
     }
 }

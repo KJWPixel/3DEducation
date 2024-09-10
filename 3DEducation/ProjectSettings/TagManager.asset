@@ -5,6 +5,7 @@ TagManager:
   serializedVersion: 2
   tags:
   - tagOpposite
+  - tagActor
   layers:
   - Default
   - TransparentFX

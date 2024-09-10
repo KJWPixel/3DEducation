@@ -66,7 +66,6 @@ public class CActor : MonoBehaviour
         CBullet tBullet = Instantiate<CBullet>(PFBullet, tPositionFire, Quaternion.identity);
         tBullet.GetComponent<Rigidbody>().AddForce(tVelocity, ForceMode.Impulse);//강체를 이용하여 F = m로 힘을 가한다.
         //이번 프레임에 주어진 힘 tVelocity를 모두 가한다.
-
     }
 
     //조준 탄환 발사

@@ -128,11 +128,7 @@ public class CEnemyBT : MonoBehaviour
     void Update()
     {
         mRootNode.Evaluate();
-
-        
     }
-
-
 
     private void OnDrawGizmos()
     {

@@ -17,11 +17,11 @@ using UnityEngine;
 public class CTower : MonoBehaviour
 {
     //탄환 프리팹 참조
-    [SerializeField] CBullet PFBullet = null; //포신 
+    //[SerializeField] CBullet PFBullet = null; 
 
-    [SerializeField] GameObject mHead = null; //탄환 발사 위치
+    [SerializeField] GameObject mHead = null; //포신 
 
-    [SerializeField] GameObject mPosFire = null; //탄환 발사 위치
+   // [SerializeField] GameObject mPosFire = null; //탄환 발사 위치
 
     [SerializeField] GameObject mTargetObject = null; //응시대상
 
