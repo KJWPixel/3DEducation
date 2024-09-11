@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6022488078327714703}
   - component: {fileID: 588764706375923218}
-  - component: {fileID: 2455503603228253491}
+  - component: {fileID: -1063390900869655032}
   m_Layer: 0
   m_Name: PFEnemy
   m_TagString: Untagged
@@ -57,7 +57,7 @@ NavMeshAgent:
   m_BaseOffset: 0
   m_WalkableMask: 7
   m_ObstacleAvoidanceType: 4
---- !u!114 &2455503603228253491
+--- !u!114 &-1063390900869655032
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -70,8 +70,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mIsGrenade: 0
-  mSpawnAnyPosition: {x: 0, y: 0, z: 0}
-  mDetectedRadius: 5
+  mSpawnAnyPostion: {x: 0, y: 0, z: 0}
+  mDetectedRadius: 0
 --- !u!1 &290452977605125800
 GameObject:
   m_ObjectHideFlags: 0
