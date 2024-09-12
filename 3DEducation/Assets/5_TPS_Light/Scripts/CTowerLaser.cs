@@ -4,7 +4,9 @@ using UnityEngine;
 
 public class CTowerLaser : MonoBehaviour
 {
-    [SerializeField] GameObject mPosFire = null; //탄환 발사 위치
+    [SerializeField] GameObject PFEfxSpark = null;
+
+    [SerializeField] GameObject mPosFire = null; //발사 위치
 
     //라인렌더러 컴포넌트 참조
     //LineRenderer <-- 선 형태의 가시적인 결과물을 만들어내는 컴포넌트. N개의 정점을 가진다.
@@ -30,6 +32,11 @@ public class CTowerLaser : MonoBehaviour
         if(tIsCollision)
         {
             Debug.Log("collision!");
+
+            //충돌 지점의 평면의 법선벡터 방향으로 회전
+            Quaternion tRot = Quaternion.LookRotation(tHit.normal);
+            GameObject tEfx = Instantiate<GameObject>(PFEfxSpark, tHit.point, tRot);
+            Destroy(tEfx, 1f);
 
             if(tHit.collider.CompareTag("tagActor"))
             {

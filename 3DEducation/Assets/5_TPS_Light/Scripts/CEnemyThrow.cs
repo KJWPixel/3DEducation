@@ -14,11 +14,12 @@ public class CEnemyThrow : MonoBehaviour
     //탄착지점(목표지점)
     [SerializeField] GameObject mTarget = null;
 
+    //수류탄 발사(던지기)
     public void DoFire()//DoFire(GameObject tTarget)
     {
         //주인공 캐릭터에게 던지는 것으로 가정
         mTarget = FindObjectOfType<CPChar_step_1>().gameObject;
-        //mTarget = tTarget;
+        //mTarget = tTarget;//DoFire의 매개변수가 있을때
 
         //test
         //mTarget.transform.position = new Vector3(10, 0, 10);
