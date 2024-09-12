@@ -6,14 +6,15 @@ TagManager:
   tags:
   - tagOpposite
   - tagActor
+  - tagFloor
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - layer_3
   - Water
   - UI
-  - 
+  - layer_6
   - 
   - 
   - 
