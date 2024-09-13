@@ -99,11 +99,16 @@ public class CPChar_step_1 : MonoBehaviour
         //반직선과 충돌체를 통한 충돌 검출
         RaycastHit tHit;
         //반직선
-        bool tIsCollision = Physics.Raycast(Ray, out tHit, Mathf.Infinity);
+        //bool tIsCollision = Physics.Raycast(Ray, out tHit, Mathf.Infinity);
+        bool tIsCollision = Physics.Raycast(Ray, out tHit, Mathf.Infinity, ~(1<<7));
+        //~ 비트연산, NOT의 의미(1은 0으로, 0은 1로)
 
         if (tIsCollision)
         {
             Debug.Log("Fire!");
+
+            //test
+            testHit = tHit;
 
             //if (tHit.collider.CompareTag("tagActor"))
             //{
@@ -114,6 +119,14 @@ public class CPChar_step_1 : MonoBehaviour
         {
             Debug.Log("NOT collision!");
         }
+    }
 
+    RaycastHit testHit;
+
+    private void OnDrawGizmos()
+    {
+        //목적지점 확인용 기즈모
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireCube(testHit.point, Vector3.one * 0.5f);
     }
 }
