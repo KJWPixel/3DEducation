@@ -8,6 +8,21 @@ memo_tps.txt
 :부모클래스의 함수와 동일한 형태로 만들되
 실제 정의의 구현은 다르게 하는 것.
 
+//delegate 델리게이트 (대리자) <--간접호출의 도구
+	  public delegate void Func(); 델리게이트 선언
+
+	  List<Func> tFunctions = new List<Func>()
+	  {
+		doIdle, doAttck, doDamage
+	  };
+
+	  mCurState = 0;
+	  mCurState = 2;
+
+	  tFunctions[mCurState](); <--간접호출
+
+	  Console.ReadLine();
+
 
 Dictionary <-- 자료구조 중에 해쉬 자료구조. 검색을 위해 만들어진 자료구조. 시간복잡도는 O(1)
 SortedDictionary <-- 자료구조 중에 균형이진탐색트리 시간복잡도 O(log N)
@@ -44,7 +59,7 @@ Scene Graph
 
 렌더링 Rendering
 :3D공간상에 정점 단위의 데이터를 
-2D공간상에 픽셀 단위의 데이터로 이미지화시켜(프레임 이미지)표시하는 것
+2D공간상에 픽셀 단위의 데이터를 이미지화시켜(프레임 이미지)표시하는 것
 
 렌더링 파이프라인 Rendering Pipeline
 렌더링의 일련의 공정들의 집합
@@ -60,7 +75,7 @@ Scene Graph
 그래픽 처리 장치로 
 넘기는 작업
 ===================================================================================================
-CPU, RAM							GPU, VRAM
+CPU, SystemRAM						GPU, VideoRAM
 
 									정점 데이터를 다룬다.						  픽셀 데이터를 다룬다.
 									연속적인 공간을 다룬다.						  불연속적인 공간을 다룬다.
@@ -717,22 +732,89 @@ Lens Distortion
 	렌즈에 외곽에 굴절 이상으로 사진이 왜곡되어 보이는 현상
 	<-- 이 효과가 들어가면 좀 더 실제감이 느껴진다. (좀 더 렌즈로 찍은 것 같다.)
 
+Ambient Occlusion
+	주변광 차폐
+	<-- 어두운 곳을 더욱 어둡게 하는 효과
+	<-- 구석진 등에 주변광이 들어오지 않는 부분을 표현하는데 적합
+
+Motion Blur
+	셔터 앵글
+	 동영상 촬영 카메라에서
+	 회전하는 디스크 형태의 카메라 셔터(순간포착을 위한 도구)이다.
+
+	 셔터 앵글에 의해 빛의 노출시점을 지정한다.
+	 노출시간동안 감광된다.
+	 즉, 그러므로 노출시간을 늘리면 그 시간동안 계속해서 이미지가 찍힌다.
+
+	 (잔상)이를 이용하여 빠르게 움직이는 물체의 블러(흐릿한)효과를 만든다.
+
+Depth Of Field 
+	피사계 감도
+
+	실제 카메라에서
+	 조리개가 좁으면(빛의 양이 적다)깊은 피사계심도를 만든다.
+	 <-- f-stop이 올라간다. <--유니티에서는 Apeture라고 부른다.
+	 <--선명하고 정확하게 보인다.
+
+	 조리개가 넓으면(빛의 양이 많다)얕은 피사계심도를 만든다.
+	  <-- f-stop이 내려간다.  <--유니티에서는 Apeture라고 부른다.
+	  <-- 흐릿한 부분들이 많다.
+
+
+	예) 접사렌즈: 
+		 조리개가 넓으면 얕은 피사계 심도를 만든다.
+		 <-- 이를테면, 작은 인형 캐릭터가 주인공인 게임이라면 이러한 효과를 이용하는게 적합하다.
+
+Color Grading
+	화면의 색감을 표현할 수 있는 여러 색상 도구들이 들어있다.
+
+	White Balance
+	 화이트 밸런스란 '어느 색을 하얀색으로 볼 것이냐'라는 것이다. 
+
+	 Color Temparature 색온도
+	  탄소막대 불빛 색 설명서
+	  탁소막대를 가열하면 각각 다른 온도대 마다 다른 색상을 띈다.
+	  이를테면 낮은 온도에서는 붉은 색 계열
+	  높은 온도에서는 파란 색 계열
+	  이를 색온도라고 칭했다.
+
+	  유니티에서는 이를 가져와 white balance를 조정하는 도구로 사용하고 있다.
+
+	Tone
+	  다음은 아티스트분들이 선호하는 색상 구성 도구이다.
+	  Hue 색상
+	  Saturation 채도
+	  Contrast 명도
+
+
+Screen Space Reflections
+	스크린 공간 반사
+	<-- 스크린 공간을 이용하여 반사 처리를 수행하는 효과이다.
+	<-- Deferred Rendering Path에서만 동작한다.
+
+
+	built in render pipeline
+	<-- unity 2019부터  Scriptable Rendering Pipeline이 도입되었다.
+	그래서 그 이전부터 사용하던 Rendering Pipeline은 builtin으로 명명되었다.
+
+	built in render pipeline에서는 기본 Render path가 forward방식이다.
+
+	forward Render Path
+	:조명 연산 처리를 정점 단위로 한다.
+	<--물체와 조명 갯수가 늘어나면 늘어날 수록 연산이 많아진다. 연산량은 O(M*N)
+	<--기하 단계
+
+	deferred Render Path
+	:조명 연산 처리를 픽셀 단위로 한다.
+	<--래스터라이즈 단계 이후
+
+	<---픽셀의 갯수는 일정하므로, 연산량은 O(1)
 
 
 
-	  //delegate 델리게이트 (대리자) <--간접호출의 도구
-	  public delegate void Func(); 델리게이트 선언
 
-	  List<Func> tFunctions = new List<Func>()
-	  {
-		doIdle, doAttck, doDamage
-	  };
 
-	  mCurState = 0;
-	  mCurState = 2;
 
-	  tFunctions[mCurState](); <--간접호출
-
-	  Console.ReadLine();
+	  
 		
 
